@@ -62,6 +62,19 @@ Executing a query:
 {ok, <<"OK">>} = eredis_pool:q(pool1, [<<"SET">>, Key, Value, <<"EX">>, 10000]).
 ```
 
+Performance testing
+-----------
+
+The code is in `test` folder. In the following test I send 600000 requests from 600 concurrent processes. Each host having 3 connections.
+
+```
+make bench
+### run test ->  concurrent clients: 600 requests per client: 1000 
+### 2241 ms 333333 req/sec 
+```
+
+You can run it yourself using `make bench` after you copy the `load_test.erl` from benchmark folder in src and compile.
+
 [1]:https://github.com/JohnSully/KeyDB
 [2]:https://github.com/silviucpp/erlpool
 [3]:https://github.com/wooga/eredis
