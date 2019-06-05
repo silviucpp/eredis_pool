@@ -68,9 +68,15 @@ run_command(PoolName, Key, Command) ->
                 0 ->
                     {error, no_nodes_available};
                 ShardMapSize ->
-                    SelectedShard = jchash:compute(erl_hash:murmur2(Key), ShardMapSize),
-                    {ok, NodesTags} = maps:find(SelectedShard, ShardsMap),
-                    do_run_command(NodesTags, Command)
+                    Hash = erl_hash:murmur2(Key),
+                    {ok, NodesTags} = maps:find(jchash:compute(Hash, ShardMapSize), ShardsMap),
+
+                    case length(NodesTags) of
+                        NodesTagLength when NodesTagLength > 1 ->
+                            do_run_command(shuffle_list(NodesTags, 0, Hash rem NodesTagLength, []), Command);
+                        _ ->
+                            do_run_command(NodesTags, Command)
+                    end
             end;
         Error ->
             Error
@@ -87,6 +93,14 @@ do_run_command([NodeTag|RemainingNodes], Command) ->
     end;
 do_run_command([], _Command) ->
     {error, no_nodes_available}.
+
+shuffle_list([H|T], Index, DesiredIndex, Acc) ->
+    case Index of
+        DesiredIndex ->
+            [H | Acc] ++ T;
+        _ ->
+            shuffle_list(T, Index+1, DesiredIndex, [H|Acc])
+    end.
 
 should_failover({ok, _}) ->
     false;
