@@ -18,7 +18,7 @@ Key distribution
 ----------------
 
 Keys are hashed using `murmur2` and distributed using the `Jump Consistent Hash algorithm` across the shards. In case a shard has multiple nodes,
-we send the command first to the node with index `Hash rem length(NodesTags)`. In case that ndoe is down the other nodes in the shard
+we send the command first to the node with index `Hash rem length(NodesTags)`. In case that node is down the other nodes in the shard
 are tried till one is up or no other nodes remaining. 
 
 Quick start
