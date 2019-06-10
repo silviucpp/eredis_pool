@@ -70,6 +70,12 @@ Executing a query:
 {ok, <<"OK">>} = eredis_pool:q(pool1, [<<"SET">>, Key, Value, <<"EX">>, 10000]).
 ```
 
+Limitations
+-----------
+
+Pipelines and transactions will work properly only in case they key's inside them goes on the same node. The app will get
+the key from the first command and sends the pipeline/transaction there.
+
 Performance testing
 -----------
 

@@ -6,7 +6,9 @@
     start/5,
     stop/1,
     restart/1,
-    q/3
+    q/3,
+    qp/3,
+    transaction/3
 ]).
 
 start(NodeTag, Host, Port, ConnectionsPerHost, ConnectionOpts) ->
@@ -31,6 +33,21 @@ q(NodeTag, Command, Timeout) ->
         eredis:q(erlpool:pid(NodeTag), Command, Timeout)
     catch _:Error ->
         handle_exception(Error, Command)
+    end.
+
+qp(NodeTag, Pipeline, Timeout) ->
+    try
+        eredis:qp(erlpool:pid(NodeTag), Pipeline, Timeout)
+    catch _:Error ->
+        handle_exception(Error, Pipeline)
+    end.
+
+transaction(NodeTag, Commands0, Timeout) ->
+    case qp(NodeTag, [[<<"MULTI">>] | Commands0] ++ [[<<"EXEC">>]], Timeout) of
+        Rs when is_list(Rs) ->
+            lists:last(Rs);
+        Other ->
+            Other
     end.
 
 % internals
