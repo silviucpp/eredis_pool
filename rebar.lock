@@ -9,7 +9,7 @@
   0},
  {<<"erl_hash">>,
   {git,"https://github.com/silviucpp/erl_hash.git",
-       {ref,"dc1cb0e7526be0720c2fa4efb9e49342f193c898"}},
+       {ref,"809d5fc8ee0aeaa342150e5c6bce6f0614ad1340"}},
   0},
  {<<"erlpool">>,
   {git,"https://github.com/silviucpp/erlpool.git",
@@ -18,7 +18,7 @@
  {<<"goldrush">>,{pkg,<<"goldrush">>,<<"0.1.9">>},1},
  {<<"jchash">>,
   {git,"https://github.com/cabol/jchash.git",
-       {ref,"3c589d0f80713306812338183d198ca32ba70f8e"}},
+       {ref,"39bd85d739b37e6958935596939f616c4e6b1f52"}},
   0},
  {<<"lager">>,{pkg,<<"lager">>,<<"3.6.9">>},0}]}.
 [
