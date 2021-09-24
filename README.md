@@ -1,7 +1,7 @@
 eredis_pool
 =======
 
-[![Build Status](https://travis-ci.com/silviucpp/eredis_pool.svg?branch=master)](https://travis-ci.com/silviucpp/eredis_pool)
+[![Build Status](https://travis-ci.com/silviucpp/eredis_pool.svg?branch=master)](https://travis-ci.com/github/silviucpp/eredis_pool)
 
 An Erlang pool for Redis with consistent hashing based on [erlpool][2] and [eredis][3]. 
 This project was developed to be used with [KeyDB][1] by using Active Replication and Multi-Master features, but can be used as well with Redis.  
