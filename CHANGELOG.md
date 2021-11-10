@@ -1,5 +1,17 @@
 ### Changelog:
 
+##### v1.0.3
+
+- Fix config parser when we have more than 2 nodes in a shard.
+
+##### v1.0.2
+
+- Fix OTP 24 build.
+
+##### v1.0.1
+
+- Fix OTP 23 build.
+
 ##### v1.0.0
 
 - Initial implementation

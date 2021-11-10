@@ -58,7 +58,7 @@ shards_to_map([], _Index, Acc) ->
     maps:from_list(Acc).
 
 get_shards([H|T], PoolNameBin, Acc) ->
-    Nodes = lists:map(fun(X) -> to_node(X, PoolNameBin) end, binary:split(H, <<",">>)),
+    Nodes = lists:map(fun(X) -> to_node(X, PoolNameBin) end, binary:split(H, <<",">>, [global])),
     get_shards(T, PoolNameBin, [Nodes|Acc]);
 get_shards([], _PoolNameBin, Acc) ->
     lists:reverse(Acc).

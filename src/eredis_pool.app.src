@@ -2,7 +2,7 @@
     {description, "Erlang pool for Redis with consistent hashing support"},
     {licenses, ["MIT"]},
     {links,[{"Github","https://github.com/silviucpp/eredis_pool"}]},
-    {vsn, "1.0.2"},
+    {vsn, "1.0.3"},
     {registered, []},
     {applications, [
         kernel,
