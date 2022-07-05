@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.0.4
+
+- Fix the sharding key for EVAL command.
+
 ##### v1.0.3
 
 - Fix config parser when we have more than 2 nodes in a shard.

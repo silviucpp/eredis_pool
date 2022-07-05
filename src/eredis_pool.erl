@@ -6,6 +6,8 @@
 -define(OP_PIPELINE, pipeline).
 -define(OP_TRANSACTION, transaction).
 
+-define(IS_EVAL(X), (X == <<"EVAL">> orelse X == <<"eval">>)).
+
 -export([
     start/0,
     start/1,
@@ -57,13 +59,7 @@ restart_pool(PoolName) ->
     {ok, return_value()} | {error, redis_error()}.
 
 q(PoolName, Command) ->
-    case Command of
-        [_, Key|_] ->
-            run_command(PoolName, erp_utils:to_binary(Key), ?OP_QUERY, Command);
-        _ ->
-            % commands without a key are sent to a random node -> example: PING
-            run_command(PoolName, <<"">>, ?OP_QUERY, Command)
-    end.
+    run_command(PoolName, get_key(Command), ?OP_QUERY, Command).
 
 -spec qp(atom(), pipeline()) ->
     [{ok, return_value()} | {error, redis_error()}] | {error, no_nodes_available}.
@@ -119,10 +115,27 @@ exec(?OP_PIPELINE, NodeTag, Command) ->
 exec(?OP_TRANSACTION, NodeTag, Command) ->
     erp_node_pool:transaction(NodeTag, Command, ?DEFAULT_TIMEOUT).
 
-get_pipeline_key([H|T]) ->
-    case H of
-        [_, Key|_] ->
+get_key([RedisCommand, Key | Other])  ->
+    case ?IS_EVAL(RedisCommand) of
+        false ->
             erp_utils:to_binary(Key);
+        _ ->
+            case Other of
+                [KeysCount, FirstKey| _OtherKeysAndArgs] when KeysCount > 0 ->
+                    erp_utils:to_binary(FirstKey);
+                _ ->
+                    % just send the request to a random node
+                    <<"">>
+            end
+    end;
+get_key(_) ->
+    % just send the request to a random node
+    <<"">>.
+
+get_pipeline_key([H|T]) ->
+    case get_key(H) of
+        K when byte_size(K) > 0 ->
+            K;
         _ ->
             get_pipeline_key(T)
     end;
