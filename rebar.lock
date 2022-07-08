@@ -5,7 +5,7 @@
   0},
  {<<"erl_hash">>,
   {git,"https://github.com/silviucpp/erl_hash.git",
-       {ref,"503e97106fb4b5341b875145dc4723bbc8aad3e4"}},
+       {ref,"f1a4bca5371ccfa39f7e823ff61e44dc891d2090"}},
   0},
  {<<"erlpool">>,
   {git,"https://github.com/silviucpp/erlpool.git",
