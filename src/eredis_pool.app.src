@@ -2,7 +2,7 @@
     {description, "Erlang pool for Redis with consistent hashing support"},
     {licenses, ["MIT"]},
     {links,[{"Github","https://github.com/silviucpp/eredis_pool"}]},
-    {vsn, "1.0.4"},
+    {vsn, "1.0.5"},
     {registered, []},
     {applications, [
         kernel,
@@ -12,7 +12,7 @@
         erl_hash,
         erlpool
     ]},
-    {included_applications, [jchash]},
+    {included_applications, [jchash, dynamic_compile]},
     {mod, {eredis_pool_app, []}},
     {env,[]},
     {modules, []},
