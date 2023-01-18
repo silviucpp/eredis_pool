@@ -2,12 +2,11 @@
     {description, "Erlang pool for Redis with consistent hashing support"},
     {licenses, ["MIT"]},
     {links,[{"Github","https://github.com/silviucpp/eredis_pool"}]},
-    {vsn, "1.0.5"},
+    {vsn, "1.0.6"},
     {registered, []},
     {applications, [
         kernel,
         stdlib,
-        lager,
         eredis,
         erl_hash,
         erlpool

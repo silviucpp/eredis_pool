@@ -102,7 +102,7 @@ do_run_command([NodeTag|RemainingNodes], CommandType, Command) ->
         false ->
             Result;
         _ ->
-            ?ERROR_MSG("redis command: ~p on: ~p failed with: ~p -> will failover on: ~p", [Command, NodeTag, Result, RemainingNodes]),
+            ?LOG_ERROR("redis command: ~p on: ~p failed with: ~p -> will failover on: ~p", [Command, NodeTag, Result, RemainingNodes]),
             do_run_command(RemainingNodes, CommandType, Command)
     end;
 do_run_command([], _CommandType,  _Command) ->

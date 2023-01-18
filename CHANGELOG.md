@@ -1,5 +1,15 @@
 ### Changelog:
 
+##### v1.0.6
+
+- Migrate from lager to logger.
+- Update erlpool
+
+##### v1.0.5
+
+- Fix broken build
+- Update erl_hash
+
 ##### v1.0.4
 
 - Fix the sharding key for EVAL command.

@@ -12,7 +12,7 @@
 ]).
 
 start(NodeTag, Host, Port, ConnectionsPerHost, ConnectionOpts) ->
-    ?INFO_MSG("start pool with tag: ~p host: ~p port: ~p connections: ~p", [NodeTag, Host, Port, ConnectionsPerHost]),
+    ?LOG_INFO("start pool with tag: ~p host: ~p port: ~p connections: ~p", [NodeTag, Host, Port, ConnectionsPerHost]),
 
     ok = erlpool:start_pool(NodeTag, [
         {size, ConnectionsPerHost},
@@ -21,11 +21,11 @@ start(NodeTag, Host, Port, ConnectionsPerHost, ConnectionOpts) ->
     ]).
 
 stop(NodeTag) ->
-    ?INFO_MSG("stop pool with tag: ~p", [NodeTag]),
+    ?LOG_INFO("stop pool with tag: ~p", [NodeTag]),
     erlpool:stop_pool(NodeTag).
 
 restart(NodeTag) ->
-    ?INFO_MSG("restart pool with tag: ~p", [NodeTag]),
+    ?LOG_INFO("restart pool with tag: ~p", [NodeTag]),
     erlpool:restart_pool(NodeTag).
 
 q(NodeTag, Command, Timeout) ->
