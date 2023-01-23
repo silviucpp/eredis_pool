@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.0.7
+
+- Update erlpool
+
 ##### v1.0.6
 
 - Migrate from lager to logger.
