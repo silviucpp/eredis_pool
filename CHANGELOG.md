@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.0.8
+
+- Bug fixing in updating erlpool
+
 ##### v1.0.7
 
 - Update erlpool

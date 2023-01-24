@@ -12,7 +12,7 @@
   0},
  {<<"erlpool">>,
   {git,"https://github.com/silviucpp/erlpool.git",
-       {ref,"99ab1aa556ee205b9e6d88ae8f6fe0d32e9f6824"}},
+       {ref,"b0373c1c2c6d74236ab8f492fcb8a43d2a052e91"}},
   0},
  {<<"jchash">>,
   {git,"https://github.com/cabol/jchash.git",
