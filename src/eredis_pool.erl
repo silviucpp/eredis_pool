@@ -6,8 +6,6 @@
 -define(OP_PIPELINE, pipeline).
 -define(OP_TRANSACTION, transaction).
 
--define(IS_EVAL(X), (X == <<"EVAL">> orelse X == <<"eval">>)).
-
 -export([
     start/0,
     start/1,
@@ -116,16 +114,20 @@ exec(?OP_TRANSACTION, NodeTag, Command) ->
     erp_node_pool:transaction(NodeTag, Command, ?DEFAULT_TIMEOUT).
 
 get_key([RedisCommand, Key | Other])  ->
-    case ?IS_EVAL(RedisCommand) of
+    case is_eval_or_evalsha(RedisCommand) of
         false ->
             erp_utils:to_binary(Key);
-        _ ->
+        {true, Type} ->
             case Other of
                 [KeysCount, FirstKey| _OtherKeysAndArgs] when KeysCount > 0 ->
                     erp_utils:to_binary(FirstKey);
                 _ ->
-                    % just send the request to a random node
-                    <<"">>
+                    case Type of
+                        evalsha ->
+                            Key;
+                        _ ->
+                            erp_utils:sha_hex(Key)
+                    end
             end
     end;
 get_key(_) ->
@@ -169,4 +171,11 @@ should_failover({error, Reason}) ->
             false
     end;
 should_failover(_) ->
+    false.
+
+is_eval_or_evalsha(C) when C == <<"EVALSHA">> orelse C == <<"evalsha">> ->
+    {true, evalsha};
+is_eval_or_evalsha(C) when C == <<"EVAL">> orelse C == <<"eval">> ->
+    {true, eval};
+is_eval_or_evalsha(_) ->
     false.

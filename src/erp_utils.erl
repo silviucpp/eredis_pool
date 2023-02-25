@@ -7,6 +7,7 @@
     lookup/2,
     lookup/3,
     to_binary/1,
+    sha_hex/1,
     join/2
 ]).
 
@@ -52,6 +53,8 @@ to_binary(V) when is_integer(V) ->
 to_binary(V) when is_float(V) ->
     float_to_binary(V, [{decimals, 8}, compact]).
 
+sha_hex(Text) ->
+    string:lowercase(binary:encode_hex(crypto:hash(sha, Text))).
 
 join([Head | Tail], Sep) ->
     join_list_sep(Tail, Sep, [Head]);

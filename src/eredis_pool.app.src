@@ -7,6 +7,7 @@
     {applications, [
         kernel,
         stdlib,
+        crypto,
         eredis,
         erl_hash,
         erlpool
