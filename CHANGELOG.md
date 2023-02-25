@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.0.9
+
+- Bug fixing for EVAL and EVALSHA
+
 ##### v1.0.8
 
 - Bug fixing in updating erlpool
