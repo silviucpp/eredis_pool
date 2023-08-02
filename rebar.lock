@@ -16,5 +16,5 @@
   0},
  {<<"jchash">>,
   {git,"https://github.com/cabol/jchash.git",
-       {ref,"28c44d4bf12bd526839c915c27b6e81bac2c412f"}},
+       {ref,"6f21c43a74cd821850474435a18aeba69f496316"}},
   0}].

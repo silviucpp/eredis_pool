@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.1.0
+
+- Fix build with OTP 26
+
 ##### v1.0.9
 
 - Bug fixing for EVAL and EVALSHA
