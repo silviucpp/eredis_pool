@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.1.1
+
+- Update erlpool version
+
 ##### v1.1.0
 
 - Fix build with OTP 26

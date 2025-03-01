@@ -1,7 +1,7 @@
 eredis_pool
 =======
 
-[![Build Status](https://travis-ci.com/silviucpp/eredis_pool.svg?branch=master)](https://travis-ci.com/github/silviucpp/eredis_pool)
+[![Build Status](https://app.travis-ci.com/silviucpp/eredis_pool.svg?branch=master)](https://travis-ci.com/github/silviucpp/eredis_pool)
 [![GitHub](https://img.shields.io/github/license/silviucpp/eredis_pool)](https://github.com/silviucpp/eredis_pool/blob/master/LICENSE)
 
 An Erlang pool for Redis with consistent hashing based on [erlpool][2] and [eredis][3]. 
