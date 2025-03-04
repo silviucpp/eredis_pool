@@ -9,16 +9,5 @@
     get_shards_map/1
 ]).
 
--ifdef(common_test).
--define(DO_NOT_LOAD, ok).
--else.
--define(DO_NOT_LOAD, do_not_load).
--endif.
-
--on_load(do_not_load/0).
-
-do_not_load() ->
-    ?DO_NOT_LOAD.
-
 get_shards_map(_) ->
     {error, not_found}.
