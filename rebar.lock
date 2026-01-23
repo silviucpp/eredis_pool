@@ -8,7 +8,7 @@
   0},
  {<<"erl_hash">>,
   {git,"https://github.com/silviucpp/erl_hash.git",
-       {ref,"b735e57c23dcd7163fe1c291fb095e4188ba9f00"}},
+       {ref,"51b38904b6eabf566711964d5adb04d5d46a7a6c"}},
   0},
  {<<"erlpool">>,
   {git,"https://github.com/silviucpp/erlpool.git",
