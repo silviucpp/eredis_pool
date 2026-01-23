@@ -1,5 +1,13 @@
 ### Changelog:
 
+##### v1.2.1
+
+- Updated hash library
+
+##### v1.2.0
+
+- Compatible with embeded mode
+
 ##### v1.1.1
 
 - Update erlpool version
