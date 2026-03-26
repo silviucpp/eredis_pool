@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### v1.2.2
+
+- Add support for custom timeout in API
+
 ##### v1.2.1
 
 - Updated hash library

@@ -12,8 +12,11 @@
     stop/0,
     restart_pool/1,
     q/2,
+    q/3,
     qp/2,
-    transaction/2
+    qp/3,
+    transaction/2,
+    transaction/3
 ]).
 
 -define(DEFAULT_TIMEOUT, 1000).
@@ -57,23 +60,41 @@ restart_pool(PoolName) ->
     {ok, return_value()} | {error, redis_error()}.
 
 q(PoolName, Command) ->
-    run_command(PoolName, get_key(Command), ?OP_QUERY, Command).
+    run_command(PoolName, get_key(Command), ?OP_QUERY, Command, ?DEFAULT_TIMEOUT).
+
+-spec q(atom(), [any()], non_neg_integer()) ->
+    {ok, return_value()} | {error, redis_error()}.
+
+q(PoolName, Command, Timeout) ->
+    run_command(PoolName, get_key(Command), ?OP_QUERY, Command, Timeout).
 
 -spec qp(atom(), pipeline()) ->
     [{ok, return_value()} | {error, redis_error()}] | {error, no_nodes_available}.
 
 qp(PoolName, Pipeline) ->
-    run_command(PoolName, get_pipeline_key(Pipeline), ?OP_PIPELINE, Pipeline).
+    qp(PoolName, Pipeline, ?DEFAULT_TIMEOUT).
+
+-spec qp(atom(), pipeline(), non_neg_integer()) ->
+    [{ok, return_value()} | {error, redis_error()}] | {error, no_nodes_available}.
+
+qp(PoolName, Pipeline, Timeout) ->
+    run_command(PoolName, get_pipeline_key(Pipeline), ?OP_PIPELINE, Pipeline, Timeout).
 
 -spec transaction(atom(), pipeline()) ->
     {ok, [return_value()]} | {error, redis_error()}.
 
 transaction(PoolName, Pipeline) ->
-    run_command(PoolName, get_pipeline_key(Pipeline), ?OP_TRANSACTION, Pipeline).
+    transaction(PoolName, Pipeline, ?DEFAULT_TIMEOUT).
+
+-spec transaction(atom(), pipeline(), non_neg_integer()) ->
+    {ok, [return_value()]} | {error, redis_error()}.
+
+transaction(PoolName, Pipeline, Timeout) ->
+    run_command(PoolName, get_pipeline_key(Pipeline), ?OP_TRANSACTION, Pipeline, Timeout).
 
 % internals
 
-run_command(PoolName, Key, CommandType, Command) ->
+run_command(PoolName, Key, CommandType, Command, Timeout) ->
     case erp_cached_config:get_shards_map(PoolName) of
         {ok, ShardsMap} ->
             case maps:size(ShardsMap) of
@@ -85,33 +106,33 @@ run_command(PoolName, Key, CommandType, Command) ->
 
                     case length(NodesTags) of
                         NodesTagLength when NodesTagLength > 1 ->
-                            do_run_command(shuffle_list(NodesTags, 0, Hash rem NodesTagLength, []), CommandType, Command);
+                            do_run_command(shuffle_list(NodesTags, 0, Hash rem NodesTagLength, []), CommandType, Command, Timeout);
                         _ ->
-                            do_run_command(NodesTags, CommandType, Command)
+                            do_run_command(NodesTags, CommandType, Command, Timeout)
                     end
             end;
         Error ->
             Error
     end.
 
-do_run_command([NodeTag|RemainingNodes], CommandType, Command) ->
-    Result = exec(CommandType, NodeTag, Command),
+do_run_command([NodeTag|RemainingNodes], CommandType, Command, Timeout) ->
+    Result = exec(CommandType, NodeTag, Command, Timeout),
     case should_failover(Result) of
         false ->
             Result;
         _ ->
             ?LOG_ERROR("redis command: ~p on: ~p failed with: ~p -> will failover on: ~p", [Command, NodeTag, Result, RemainingNodes]),
-            do_run_command(RemainingNodes, CommandType, Command)
+            do_run_command(RemainingNodes, CommandType, Command, Timeout)
     end;
-do_run_command([], _CommandType,  _Command) ->
+do_run_command([], _CommandType, _Command, _Timeout) ->
     {error, no_nodes_available}.
 
-exec(?OP_QUERY, NodeTag, Command) ->
-    erp_node_pool:q(NodeTag, Command, ?DEFAULT_TIMEOUT);
-exec(?OP_PIPELINE, NodeTag, Command) ->
-    erp_node_pool:qp(NodeTag, Command, ?DEFAULT_TIMEOUT);
-exec(?OP_TRANSACTION, NodeTag, Command) ->
-    erp_node_pool:transaction(NodeTag, Command, ?DEFAULT_TIMEOUT).
+exec(?OP_QUERY, NodeTag, Command, Timeout) ->
+    erp_node_pool:q(NodeTag, Command, Timeout);
+exec(?OP_PIPELINE, NodeTag, Command, Timeout) ->
+    erp_node_pool:qp(NodeTag, Command, Timeout);
+exec(?OP_TRANSACTION, NodeTag, Command, Timeout) ->
+    erp_node_pool:transaction(NodeTag, Command, Timeout).
 
 get_key([RedisCommand, Key | Other])  ->
     case is_eval_or_evalsha(RedisCommand) of
